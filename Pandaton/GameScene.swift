@@ -18,7 +18,10 @@ class GameScene: SKScene {
     let hero = SKSpriteNode(imageNamed: "hero")
     let background = SKSpriteNode(imageNamed: "bg")
     let spikes = SKSpriteNode(imageNamed: "spikes_new")
+    let spikes2 = SKSpriteNode(imageNamed: "spikes_new")
+
     let coin = SKSpriteNode(imageNamed: "coin")
+    let exit = SKSpriteNode(imageNamed: "exit2")
     
     let zombieMovePointsPerSec: CGFloat = 480.0
     var velocity = CGPoint.zero
@@ -30,6 +33,7 @@ class GameScene: SKScene {
     var lives = 3
     var coinCollected = false
     var gameOver = false
+    var exited = false
     
     let livesLabel = SKLabelNode(fontNamed: "Superclarendon-Black")
     let levelLabel = SKLabelNode(fontNamed: "Superclarendon-Black")
@@ -72,16 +76,26 @@ class GameScene: SKScene {
        background.position = CGPoint(x:  size.width/2, y: size.height/2)
        addChild(background)
         
-        spikes.position = CGPoint(x:  size.width/2, y: 340)
+        spikes.position = CGPoint(x:  size.width/2  * 0.8, y: 340)
         spikes.setScale(0.8)
+        spikes.name = "spikes"
         addChild(spikes)
         
+        spikes2.position = CGPoint(x:  size.width/2 + size.width/4  , y: 310)
+        spikes2.setScale(0.5)
+        spikes2.name = "spikes2"
+        addChild(spikes2)
         
-        coin.position = CGPoint(x:  size.width/2, y: 600)
-        coin.setScale(0.5)
+        
+        coin.position = CGPoint(x:  size.width/2, y: 400)
+        coin.setScale(0.6)
+        coin.name = "coin"
         addChild(coin)
-         
         
+        exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
+        exit.name  = "exit"
+        exit.setScale(0)
+        addChild(exit)
       
         spawnHero()
         
@@ -110,7 +124,7 @@ class GameScene: SKScene {
     func spawnHero() {
        
         hero.position = CGPoint(
-          x: hero.size.width/4,
+          x: hero.size.width,
           y: 370)
         hero.zPosition = 50
         hero.name = "hero"
@@ -199,15 +213,11 @@ class GameScene: SKScene {
         
     }
     
-    func move(sprite: SKSpriteNode, velocity: CGPoint) {
-      let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
-                                 y: velocity.y * CGFloat(dt))
-        let moveleft =
-            SKAction.move(to: CGPoint(x: frame.width, y: 370), duration: 3)
-//        let moveRight =
-//        SKAction.move(to: CGPoint(x: frame.width, y: 370), duration: 3)
-//      sprite.position += moveleft
-    }
+    override func didEvaluateActions() {
+       checkCollisions()
+     }
+    
+    
     
     func moveZombieToward() {
         let offset = CGPoint(x: frame.size.width, y: 0) - hero.position
@@ -266,4 +276,44 @@ class GameScene: SKScene {
         width: playableRect.width,
         height: playableRect.height)
     }
+    
+    
+    func checkCollisions() {
+
+       var hitCoin: [SKSpriteNode] = []
+       enumerateChildNodes(withName: "coin") { node, _ in
+         let coin = node as! SKSpriteNode
+         if coin.frame.intersects(self.hero.frame) {
+                 hitCoin.append(coin)
+                }
+              }
+
+              for coin in hitCoin {
+                coinPicked(coin: coin)
+              }
+        
+        var hitExit: [SKSpriteNode] = []
+              enumerateChildNodes(withName: "exit") { node, _ in
+                let exit = node as! SKSpriteNode
+                if exit.frame.intersects(self.hero.frame) {
+                    hitExit.append(self.hero)
+                       }
+                     }
+
+                     for exit in hitCoin {
+                        exitHitted(hero: hero)
+                     }
+              
+    }
+    
+    func coinPicked(coin: SKSpriteNode) {
+           coin.removeFromParent()
+          exit.setScale(0.5)
+           coinCollected = true
+          }
+    
+    func exitHitted(hero: SKSpriteNode) {
+               exited = true
+    }
+    
 }
