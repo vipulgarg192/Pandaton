@@ -80,7 +80,7 @@ class GameScene : SKScene {
         addSpike1()
         addSpike2()
         
-        
+
        
         addCoin()
         
@@ -313,6 +313,17 @@ class GameScene : SKScene {
                 coinPicked(coin: coin)
               }
         
+        enumerateChildNodes(withName: "coin2") { node, _ in
+                let coin = node as! SKSpriteNode
+                if coin.frame.intersects(self.hero.frame) {
+                        hitCoin.append(coin)
+                       }
+                     }
+
+                     for coin in hitCoin {
+                       coinPicked(coin: coin)
+                     }
+        
         var spikesNode: [SKSpriteNode] = []
         enumerateChildNodes(withName: "spikes") { node, _ in
           let spikes = node as! SKSpriteNode
@@ -321,13 +332,7 @@ class GameScene : SKScene {
                  }
                }
         
-             var spikesNode2: [SKSpriteNode] = []
-        enumerateChildNodes(withName: "spikes2") { node, _ in
-          let spikes2 = node as! SKSpriteNode
-          if spikes2.frame.insetBy(dx: 20, dy: 20).intersects(self.hero.frame) {
-                  spikesNode2.append(spikes2)
-                 }
-               }
+            
 
         for spikes in spikesNode {
                  spikesHited1(spikes: spikes)
@@ -346,7 +351,7 @@ class GameScene : SKScene {
                      }
 
                      for exit in hitExit {
-                        exitHitted(hero: hero)
+                        exitHitted(exit: exit)
                      }
               
     }
@@ -375,16 +380,14 @@ class GameScene : SKScene {
            coinCollected = true
           }
     
-    func exitHitted(hero: SKSpriteNode) {
-               exited = true
-        
+    func exitHitted(exit: SKSpriteNode) {
              // 1
-             let gameOverScene = SecondLevelUI(size: size)
-             gameOverScene.scaleMode = scaleMode
+             let second = SecondLevelUI(size: size)
+             second.scaleMode = scaleMode
              // 2
              let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
              // 3
-             view?.presentScene(gameOverScene, transition: reveal)
+             view?.presentScene(second, transition: reveal)
            
     }
     

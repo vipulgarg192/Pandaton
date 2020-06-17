@@ -19,6 +19,7 @@ class GameOverScreen: SKScene {
 }
     
     override func didMove(to view: SKView) {
+        backgroundColor = SKColor.black
     var background: SKSpriteNode
     if (won) {
     background = SKSpriteNode(imageNamed: "youwin")
@@ -28,6 +29,8 @@ class GameOverScreen: SKScene {
         background = SKSpriteNode(imageNamed: "youlose")
    
             }
+        
+       background.size = CGSize(width: self.frame.size.width  , height: self.frame.size.height * 0.8 )
     background.position =
     CGPoint(x: size.width/2, y: size.height/2)
     self.addChild(background)

@@ -19,8 +19,14 @@ class SecondLevelUI : SKScene {
     let background = SKSpriteNode(imageNamed: "bg")
     let spikes = SKSpriteNode(imageNamed: "spikes_new")
     let spikes2 = SKSpriteNode(imageNamed: "spikes_new")
+    
+    let platform1 = SKSpriteNode(imageNamed: "platform")
+    
+    let platform2 = SKSpriteNode(imageNamed: "platform")
 
     let coin = SKSpriteNode(imageNamed: "coin")
+    let coin2 = SKSpriteNode(imageNamed: "coin")
+
     let exit = SKSpriteNode(imageNamed: "exit2")
     
     let zombieMovePointsPerSec: CGFloat = 480.0
@@ -87,14 +93,28 @@ class SecondLevelUI : SKScene {
         
         
         coin.position = CGPoint(x:  size.width/2, y: 400)
-        coin.setScale(0.6)
+        coin.setScale(0.4)
         coin.name = "coin"
         addChild(coin)
         
-        exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
-        exit.name  = "exit"
-        exit.setScale(0)
-        addChild(exit)
+        
+        coin2.position = CGPoint(x:  size.width/3, y: 500)
+        coin2.setScale(0.4)
+        coin2.name = "coin2"
+        addChild(coin2)
+        
+        
+        platform1.position = CGPoint(x:  size.width/2 + 300, y: 500)
+        platform1.setScale(3)
+        platform1.name = "platform1"
+        addChild(platform1)
+        
+        platform2.position = CGPoint(x:  size.width/4 + 100, y: 500)
+        platform2.setScale(3)
+        platform2.name = "platform2"
+        addChild(platform2)
+        
+        
       
         spawnHero()
         
@@ -130,46 +150,20 @@ class SecondLevelUI : SKScene {
         addChild(hero)
         
         let actionMove =
-          SKAction.moveBy(x: size.width, y: 0, duration: 2.0)
-        let actionrught =
-        SKAction.moveBy(x: -(size.width ), y: 0, duration: 2.0)
-        hero.run(SKAction.repeatForever(SKAction.sequence([actionMove, actionrught])))
-
+          SKAction.moveBy(x: size.width, y: 0, duration: 4.0)
+    
+        hero.run(SKAction.repeatForever(SKAction.sequence([actionMove, actionMove.reversed()])))
 
     }
     
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             for touch in touches {
                        let location = touch.location(in: self)
                     print(location)
-                let jumpUpAction = SKAction.moveBy(x: 0, y: 300, duration: 0.3)
+                let jumpUpAction = SKAction.moveBy(x: 0, y: 300, duration: 0.5)
                 // move down 20
-                let jumpDownAction = SKAction.moveBy(x: 0, y: -300, duration: 0.3)
+                let jumpDownAction = SKAction.moveBy(x: 0, y: -300, duration: 0.5)
                 // sequence of move yup then down
                 let jumpSequence = SKAction.sequence([jumpUpAction, jumpDownAction])
 
@@ -212,6 +206,13 @@ class SecondLevelUI : SKScene {
         
         livesLabel.text = "Lives: \(lives)"
         levelLabel.text = "L: \(2)"
+        
+        if lives == 0 {
+                   let gameOverScene = GameOverScreen(size: size , won: false)
+                       gameOverScene.scaleMode = scaleMode
+                       let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                       view?.presentScene(gameOverScene, transition: reveal)
+               }
         
     }
     
@@ -294,6 +295,17 @@ class SecondLevelUI : SKScene {
                 coinPicked(coin: coin)
               }
         
+        enumerateChildNodes(withName: "coin2") { node, _ in
+        let coin = node as! SKSpriteNode
+        if coin.frame.intersects(self.hero.frame) {
+                hitCoin.append(coin)
+               }
+             }
+
+             for coin in hitCoin {
+               coinPicked(coin: coin)
+             }
+        
         var spikesNode: [SKSpriteNode] = []
         enumerateChildNodes(withName: "spikes") { node, _ in
           let spikes = node as! SKSpriteNode
@@ -311,30 +323,52 @@ class SecondLevelUI : SKScene {
         var hitExit: [SKSpriteNode] = []
               enumerateChildNodes(withName: "exit") { node, _ in
                 let exit = node as! SKSpriteNode
-                if exit.frame.intersects(self.hero.frame) {
+                if  exit.frame.intersects(self.hero.frame) {
                     hitExit.append(self.hero)
                        }
                      }
 
-                     for exit in hitCoin {
+                     for exit in hitExit {
                         exitHitted(hero: hero)
                      }
               
     }
     
     func spikesHited(spikes: SKSpriteNode) {
+        spikes.removeFromParent()
               lives -= 1
+            addRandomSpike1()
              }
     
     func coinPicked(coin: SKSpriteNode) {
            coin.removeFromParent()
           exit.setScale(0.5)
            coinCollected = true
+          
+        exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
+        exit.name  = "exit"
+        exit.setScale(0)
+        addChild(exit)
+        
           }
     
     func exitHitted(hero: SKSpriteNode) {
                exited = true
+        let gameOverScene = GameOverScreen(size: size , won: true)
+        gameOverScene.scaleMode = scaleMode
+        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+        view?.presentScene(gameOverScene, transition: reveal)
     }
+    
+    func addRandomSpike1() {
+              spikes.position = CGPoint(x: CGFloat.random(
+               min: cameraRect.minX - hero.size.width * 2 ,
+              max: cameraRect.maxX), y: 310)
+              //        spikes.setScale(0.5)
+                      spikes.size = CGSize(width: 100  , height: 100 )
+                      spikes.name = "spikes"
+                      addChild(spikes)
+          }
     
 }
 
