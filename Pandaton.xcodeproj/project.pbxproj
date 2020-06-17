@@ -17,6 +17,7 @@
 		1052E7DF24997B93003D872F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1052E7DD24997B93003D872F /* LaunchScreen.storyboard */; };
 		1052E7E924997F71003D872F /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1052E7E824997F71003D872F /* MathUtils.swift */; };
 		1052E7EB24999E1F003D872F /* SecondLevelUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1052E7EA24999E1F003D872F /* SecondLevelUI.swift */; };
+		1052E7ED2499A909003D872F /* GameOverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1052E7EC2499A909003D872F /* GameOverScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		1052E7E024997B93003D872F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1052E7E824997F71003D872F /* MathUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtils.swift; sourceTree = "<group>"; };
 		1052E7EA24999E1F003D872F /* SecondLevelUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondLevelUI.swift; sourceTree = "<group>"; };
+		1052E7EC2499A909003D872F /* GameOverScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				1052E7D024997B8F003D872F /* GameScene.sks */,
 				1052E7D224997B8F003D872F /* Actions.sks */,
 				1052E7D424997B8F003D872F /* GameScene.swift */,
+				1052E7EC2499A909003D872F /* GameOverScreen.swift */,
 				1052E7EA24999E1F003D872F /* SecondLevelUI.swift */,
 				1052E7E824997F71003D872F /* MathUtils.swift */,
 				1052E7D624997B8F003D872F /* GameViewController.swift */,
@@ -155,6 +158,7 @@
 				1052E7EB24999E1F003D872F /* SecondLevelUI.swift in Sources */,
 				1052E7D524997B8F003D872F /* GameScene.swift in Sources */,
 				1052E7E924997F71003D872F /* MathUtils.swift in Sources */,
+				1052E7ED2499A909003D872F /* GameOverScreen.swift in Sources */,
 				1052E7D724997B8F003D872F /* GameViewController.swift in Sources */,
 				1052E7CF24997B8F003D872F /* AppDelegate.swift in Sources */,
 			);

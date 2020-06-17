@@ -143,10 +143,9 @@ class GameScene : SKScene {
         addChild(hero)
         
         let actionMove =
-          SKAction.moveBy(x: size.width, y: 0, duration: 2.0)
-        let actionrught =
-        SKAction.moveBy(x: -(size.width ), y: 0, duration: 2.0)
-        hero.run(SKAction.repeatForever(SKAction.sequence([actionMove, actionrught])))
+          SKAction.moveBy(x: size.width, y: 0, duration: 3.0)
+    
+        hero.run(SKAction.repeatForever(SKAction.sequence([actionMove, actionMove.reversed()])))
 
 
     }
@@ -180,9 +179,9 @@ class GameScene : SKScene {
             for touch in touches {
                        let location = touch.location(in: self)
                     print(location)
-                let jumpUpAction = SKAction.moveBy(x: 0, y: 300, duration: 0.3)
+                let jumpUpAction = SKAction.moveBy(x: 0, y: 200, duration: 0.4)
                 // move down 20
-                let jumpDownAction = SKAction.moveBy(x: 0, y: -300, duration: 0.3)
+                let jumpDownAction = SKAction.moveBy(x: 0, y: -200, duration: 0.4)
                 // sequence of move yup then down
                 let jumpSequence = SKAction.sequence([jumpUpAction, jumpDownAction])
 
@@ -334,7 +333,7 @@ class GameScene : SKScene {
         var hitExit: [SKSpriteNode] = []
               enumerateChildNodes(withName: "exit") { node, _ in
                 let exit = node as! SKSpriteNode
-                if exit.frame.intersects(self.hero.frame) {
+                if exit.frame.insetBy(dx: 50, dy: 50).intersects(self.hero.frame) {
                     hitExit.append(self.hero)
                        }
                      }
@@ -347,11 +346,13 @@ class GameScene : SKScene {
     
     func spikesHited1(spikes: SKSpriteNode) {
               spikes.removeFromParent()
+              addRandomSpike1()
               lives -= 1
              }
     
     func spikesHited2(spikes: SKSpriteNode) {
         spikes.removeFromParent()
+        addRandomSpike2()
         lives -= 1
     }
     
@@ -361,17 +362,15 @@ class GameScene : SKScene {
            coin.removeFromParent()
               exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
                exit.name  = "exit"
-               exit.setScale(0)
+             exit.size = CGSize(width: 100  , height: 100 )
+        
                addChild(exit)
-           exit.setScale(0.5)
            coinCollected = true
           }
     
     func exitHitted(hero: SKSpriteNode) {
                exited = true
         
-       
-             
              // 1
              let gameOverScene = SecondLevelUI(size: size)
              gameOverScene.scaleMode = scaleMode
@@ -380,6 +379,26 @@ class GameScene : SKScene {
              // 3
              view?.presentScene(gameOverScene, transition: reveal)
            
+    }
+    
+    func addRandomSpike1() {
+           spikes.position = CGPoint(x: CGFloat.random(
+            min: cameraRect.minX - hero.size.width * 2 ,
+           max: cameraRect.maxX), y: 310)
+           //        spikes.setScale(0.5)
+                   spikes.size = CGSize(width: 100  , height: 100 )
+                   spikes.name = "spikes"
+                   addChild(spikes)
+       }
+    
+    func addRandomSpike2() {
+        spikes2.position = CGPoint(x: CGFloat.random(
+         min: cameraRect.minX - hero.size.width * 2 ,
+        max: cameraRect.maxX), y: 310)
+        //        spikes.setScale(0.5)
+                spikes2.size = CGSize(width: 100  , height: 100 )
+                spikes2.name = "spikes2"
+                addChild(spikes2)
     }
     
 }
