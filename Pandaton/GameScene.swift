@@ -77,22 +77,14 @@ class GameScene : SKScene {
        background.position = CGPoint(x:  size.width/2, y: size.height/2)
        addChild(background)
         
-        spikes.position = CGPoint(x:  size.width/2  * 0.8, y: 310)
-//        spikes.setScale(0.5)
-        spikes.size = CGSize(width: 100  , height: 100 )
-        spikes.name = "spikes"
-        addChild(spikes)
-        
-        spikes2.position = CGPoint(x:  size.width/2 + size.width/4  , y: 310)
-        spikes2.size = CGSize(width: 100  , height: 100 )
-        spikes2.name = "spikes2"
-        addChild(spikes2)
+        addSpike1()
+        addSpike2()
         
         
-        coin.position = CGPoint(x:  size.width/2, y: 400)
-        coin.setScale(0.6)
-        coin.name = "coin"
-        addChild(coin)
+       
+        addCoin()
+        
+        
         
        
       
@@ -118,6 +110,27 @@ class GameScene : SKScene {
                               y: playableRect.size.height - CGFloat(20))
                        self.addChild(levelLabel)
         
+    }
+    
+    func  addCoin(){
+        coin.position = CGPoint(x:  size.width/2, y: 400)
+        coin.setScale(0.6)
+        coin.name = "coin"
+        addChild(coin)
+    }
+    
+    func addSpike1() {
+        spikes.position = CGPoint(x:  size.width/2  * 0.8, y: 310)
+        //        spikes.setScale(0.5)
+                spikes.size = CGSize(width: 100  , height: 100 )
+                spikes.name = "spikes"
+                addChild(spikes)
+    }
+    func addSpike2() {
+        spikes2.position = CGPoint(x:  size.width/2 + size.width/4  , y: 310)
+               spikes2.size = CGSize(width: 100  , height: 100 )
+               spikes2.name = "spikes2"
+               addChild(spikes2)
     }
     
     func spawnHero() {
@@ -302,17 +315,20 @@ class GameScene : SKScene {
                  }
                }
         
+             var spikesNode2: [SKSpriteNode] = []
         enumerateChildNodes(withName: "spikes2") { node, _ in
           let spikes2 = node as! SKSpriteNode
           if spikes2.frame.insetBy(dx: 20, dy: 20).intersects(self.hero.frame) {
-                  spikesNode.append(spikes2)
+                  spikesNode2.append(spikes2)
                  }
                }
 
-               for spikes in spikesNode {
-                 spikesHited(spikes: spikes)
+        for spikes in spikesNode {
+                 spikesHited1(spikes: spikes)
                }
-        
+        for spikes in spikesNode2 {
+          spikesHited2(spikes: spikes)
+        }
         
         
         var hitExit: [SKSpriteNode] = []
@@ -329,9 +345,17 @@ class GameScene : SKScene {
               
     }
     
-    func spikesHited(spikes: SKSpriteNode) {
+    func spikesHited1(spikes: SKSpriteNode) {
+              spikes.removeFromParent()
               lives -= 1
              }
+    
+    func spikesHited2(spikes: SKSpriteNode) {
+        spikes.removeFromParent()
+        lives -= 1
+    }
+    
+    
     
     func coinPicked(coin: SKSpriteNode) {
            coin.removeFromParent()
