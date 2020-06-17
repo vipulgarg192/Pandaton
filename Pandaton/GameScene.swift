@@ -313,17 +313,6 @@ class GameScene : SKScene {
                 coinPicked(coin: coin)
               }
         
-        enumerateChildNodes(withName: "coin2") { node, _ in
-                let coin = node as! SKSpriteNode
-                if coin.frame.intersects(self.hero.frame) {
-                        hitCoin.append(coin)
-                       }
-                     }
-
-                     for coin in hitCoin {
-                       coinPicked(coin: coin)
-                     }
-        
         var spikesNode: [SKSpriteNode] = []
         enumerateChildNodes(withName: "spikes") { node, _ in
           let spikes = node as! SKSpriteNode
@@ -332,7 +321,13 @@ class GameScene : SKScene {
                  }
                }
         
-            
+             var spikesNode2: [SKSpriteNode] = []
+        enumerateChildNodes(withName: "spikes2") { node, _ in
+          let spikes2 = node as! SKSpriteNode
+          if spikes2.frame.insetBy(dx: 20, dy: 20).intersects(self.hero.frame) {
+                  spikesNode2.append(spikes2)
+                 }
+               }
 
         for spikes in spikesNode {
                  spikesHited1(spikes: spikes)
