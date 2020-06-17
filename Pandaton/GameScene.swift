@@ -94,10 +94,7 @@ class GameScene : SKScene {
         coin.name = "coin"
         addChild(coin)
         
-        exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
-        exit.name  = "exit"
-        exit.setScale(0)
-        addChild(exit)
+       
       
         spawnHero()
         
@@ -326,7 +323,7 @@ class GameScene : SKScene {
                        }
                      }
 
-                     for exit in hitCoin {
+                     for exit in hitExit {
                         exitHitted(hero: hero)
                      }
               
@@ -338,7 +335,11 @@ class GameScene : SKScene {
     
     func coinPicked(coin: SKSpriteNode) {
            coin.removeFromParent()
-          exit.setScale(0.5)
+              exit.position = CGPoint(x:  hero.size.width/2 , y: 340)
+               exit.name  = "exit"
+               exit.setScale(0)
+               addChild(exit)
+           exit.setScale(0.5)
            coinCollected = true
           }
     

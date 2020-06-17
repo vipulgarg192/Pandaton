@@ -211,7 +211,7 @@ class SecondLevelUI : SKScene {
         boundsCheckZombie()
         
         livesLabel.text = "Lives: \(lives)"
-        levelLabel.text = "L: \(level)"
+        levelLabel.text = "L: \(2)"
         
     }
     
