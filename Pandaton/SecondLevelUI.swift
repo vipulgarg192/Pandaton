@@ -1,5 +1,5 @@
 //
-//  GameScene.swift
+//  SecondLevelUI.swift
 //  Pandaton
 //
 //  Created by vipul garg on 2020-06-16.
@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene : SKScene {
+class SecondLevelUI : SKScene {
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
@@ -83,10 +83,7 @@ class GameScene : SKScene {
         spikes.name = "spikes"
         addChild(spikes)
         
-        spikes2.position = CGPoint(x:  size.width/2 + size.width/4  , y: 310)
-        spikes2.size = CGSize(width: 100  , height: 100 )
-        spikes2.name = "spikes2"
-        addChild(spikes2)
+        
         
         
         coin.position = CGPoint(x:  size.width/2, y: 400)
@@ -304,18 +301,11 @@ class GameScene : SKScene {
                   spikesNode.append(spikes)
                  }
                }
-        
-        enumerateChildNodes(withName: "spikes2") { node, _ in
-          let spikes2 = node as! SKSpriteNode
-          if spikes2.frame.insetBy(dx: 20, dy: 20).intersects(self.hero.frame) {
-                  spikesNode.append(spikes2)
-                 }
-               }
 
                for spikes in spikesNode {
                  spikesHited(spikes: spikes)
                }
-        
+            
         
         
         var hitExit: [SKSpriteNode] = []
@@ -344,17 +334,8 @@ class GameScene : SKScene {
     
     func exitHitted(hero: SKSpriteNode) {
                exited = true
-        
-       
-             
-             // 1
-             let gameOverScene = SecondLevelUI(size: size)
-             gameOverScene.scaleMode = scaleMode
-             // 2
-             let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-             // 3
-             view?.presentScene(gameOverScene, transition: reveal)
-           
     }
     
 }
+
+
