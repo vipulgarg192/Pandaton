@@ -225,6 +225,13 @@ class GameScene : SKScene {
         livesLabel.text = "Lives: \(lives)"
         levelLabel.text = "L: \(level)"
         
+        if lives == 0 {
+            let gameOverScene = GameOverScreen(size: size , won: false)
+                gameOverScene.scaleMode = scaleMode
+                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                view?.presentScene(gameOverScene, transition: reveal)
+        }
+        
     }
     
     override func didEvaluateActions() {
